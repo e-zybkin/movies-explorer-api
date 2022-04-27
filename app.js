@@ -2,8 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const usersRoutes = require('./routes/users');
-const moviesRoutes = require('./routes/movies');
+const routes = require('./routes/index');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
@@ -37,8 +36,7 @@ app.post('/signup', validations.reg, createUser);
 
 app.use(auth);
 
-app.use('/users', usersRoutes);
-app.use('/movies', moviesRoutes);
+app.use(routes);
 
 app.use((req, res, next) => {
   next(new ErrorNotFound('Упс, а такого у нас нету!'));

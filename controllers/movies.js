@@ -20,10 +20,10 @@ module.exports.createMovie = (req, res, next) => {
     description,
     image,
     trailerLink,
-    nameRU,
-    nameEN,
     thumbnail,
     movieId,
+    nameRU,
+    nameEN,
   } = req.body;
   const owner = req.user._id;
 

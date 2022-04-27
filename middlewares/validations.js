@@ -78,16 +78,16 @@ const makeMovie = celebrate({
     country: Joi.string().required().messages({
       'any.required': 'Страна не указана',
     }),
-    director: Joi.string().required().message({
+    director: Joi.string().required().messages({
       'any.required': 'Режиссёр не указан',
     }),
-    duration: Joi.number().required().message({
+    duration: Joi.number().required().messages({
       'any.required': 'Длительность не указана',
     }),
-    year: Joi.string().required().message({
+    year: Joi.string().required().messages({
       'any.required': 'Год выпуска не указан',
     }),
-    description: Joi.string().required().message({
+    description: Joi.string().required().messages({
       'any.required': 'Описание не указано',
     }),
     image: Joi.string().required().custom((value, helper) => {
@@ -116,6 +116,9 @@ const makeMovie = celebrate({
     }).messages({
       'any.required': 'Ссылка на картинку не указана',
       'string.notURL': 'Ссылка некорректна',
+    }),
+    movieId: Joi.number().required().messages({
+      'any.required': 'Id не указан',
     }),
     nameRU: Joi.string().required().messages({
       'any.required': 'Имя карточки на русском не указано',
