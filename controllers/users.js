@@ -10,8 +10,6 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 module.exports.createUser = (req, res, next) => {
   const {
     name,
-    about,
-    avatar,
     email,
     password,
   } = req.body;
@@ -26,8 +24,6 @@ module.exports.createUser = (req, res, next) => {
     })
     .then((hash) => User.create({
       name,
-      about,
-      avatar,
       email,
       password: hash,
     }))
@@ -57,5 +53,37 @@ module.exports.login = (req, res, next) => {
     })
     .catch((err) => {
       next(err);
+    });
+};
+
+module.exports.getUserInfo = (req, res, next) => {
+  User.findById(req.user._id)
+    .then((user) => res.send({ data: user }))
+    .catch((err) => {
+      next(err);
+    });
+};
+
+module.exports.updUserInfo = (req, res, next) => {
+  const { name, email } = req.body;
+
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, email },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+    .orFail(() => {
+      throw new ErrorNotFound('Пользователя с таким ID не существует');
+    })
+    .then((user) => res.send({ data: user }))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new ErrorValidation('Переданы невалидные данные'));
+      } else {
+        next(err);
+      }
     });
 };
