@@ -129,18 +129,9 @@ const makeMovie = celebrate({
   }),
 });
 
-const checkMovieId = celebrate({
-  [Segments.PARAMS]: Joi.object().keys({
-    movieId: Joi.string().length(24).hex().messages({
-      'string.length': 'Неверно введён ID',
-    }),
-  }),
-});
-
 module.exports = {
   reg,
   log,
   updateProf,
   makeMovie,
-  checkMovieId,
 };

@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
 const routes = require('./routes/index');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -17,6 +18,8 @@ const app = express();
 app.use(requestLogger);
 
 app.use(express.json());
+
+app.use(helmet());
 
 app.use(cors({
   origin: [
