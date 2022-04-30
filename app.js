@@ -23,7 +23,8 @@ app.use(helmet());
 
 app.use(cors({
   origin: [
-    '',
+    'http://my-movies.nomoredomains.work',
+    'https://my-movies.nomoredomains.work',
   ],
   credentials: true,
 }));
