@@ -67,23 +67,33 @@ module.exports.getUserInfo = (req, res, next) => {
 module.exports.updUserInfo = (req, res, next) => {
   const { name, email } = req.body;
 
-  User.findByIdAndUpdate(
-    req.user._id,
-    { name, email },
-    {
-      new: true,
-      runValidators: true,
-    },
-  )
-    .orFail(() => {
-      throw new ErrorNotFound('Пользователя с таким ID не существует');
-    })
-    .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new ErrorValidation('Переданы невалидные данные'));
+  User.findOne({ email })
+    .then((result) => {
+      if (result === null) {
+        User.findByIdAndUpdate(
+          req.user._id,
+          { name, email },
+          {
+            new: true,
+            runValidators: true,
+          },
+        )
+          .orFail(() => {
+            throw new ErrorNotFound('Пользователя с таким ID не существует');
+          })
+          .then((user) => res.send({ data: user }))
+          .catch((err) => {
+            if (err.name === 'ValidationError') {
+              next(new ErrorValidation('Переданы невалидные данные'));
+            } else {
+              next(err);
+            }
+          });
       } else {
-        next(err);
+        next(new ErrorConflict('Для обновления данных нельзя использовать чужую почту'));
       }
+    })
+    .catch((err) => {
+      next(err);
     });
 };

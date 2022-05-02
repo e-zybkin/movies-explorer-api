@@ -10,9 +10,11 @@ const reg = celebrate({
     name:
       Joi
         .string()
+        .required()
         .min(2)
         .max(30)
         .messages({
+          'any.required': 'Имя не указано',
           'string.min': 'Имя должно быть не короче 2 символов',
           'string.max': 'Имя должно быть не длиннее 30 символов',
         }),
@@ -129,9 +131,18 @@ const makeMovie = celebrate({
   }),
 });
 
+const checkMovieId = celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    _id: Joi.string().length(24).hex().messages({
+      'string.length': 'Неверно введён ID',
+    }),
+  }),
+});
+
 module.exports = {
   reg,
   log,
   updateProf,
   makeMovie,
+  checkMovieId,
 };
