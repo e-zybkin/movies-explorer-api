@@ -69,7 +69,7 @@ module.exports.updUserInfo = (req, res, next) => {
 
   User.findOne({ email })
     .then((result) => {
-      if (result === null) {
+      if (result === null || result._id.toString() === req.user._id) {
         User.findByIdAndUpdate(
           req.user._id,
           { name, email },
