@@ -21,6 +21,7 @@ app.use(cors({
   origin: [
     'http://my-movies.nomoredomains.work',
     'https://my-movies.nomoredomains.work',
+    'http://localhost:3000',
   ],
   credentials: true,
 }));
